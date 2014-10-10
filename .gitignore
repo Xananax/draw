@@ -1,0 +1,8 @@
+*.gdoc
+*.doc
+*.docx
+.SyncArchive
+.SyncID
+.SyncIgnore
+books
+*.gsheet
