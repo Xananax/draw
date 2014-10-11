@@ -7,6 +7,7 @@ var glob = require("glob")
 ,	jade = require('jade')
 ,	stylus = require('stylus')
 ,	nib = require('nib')
+,	rupture = require('rupture')
 ,	thumbs_dir = './_thumbs'
 ,	jade_file = './index.jade'
 ,	thumb_size = 200
@@ -92,6 +93,7 @@ function makeStylusProcessor(opts){
 		str = str.replace(/\\n/g, '\n');
 		stylus(str, options)
 			.use(nib())
+			.use(rupture())
 			.define('thumbSize', new stylus.nodes.Unit(opts.thumb_size,'px'))
 			.define('imageFilters',opts.filters)
 			.render(function(err, css){

@@ -58,8 +58,22 @@ html
 				height 100%
 				overflow-y scroll
 			#Wrapper
-				width 1000px
+				width 1250px
+				max-width 100%
 				margin 4em auto 2em auto
+				+below('xl')
+					width 1000px
+				+below('l')
+					width 600px
+				+below('m')
+					width 400px
+				+below('s')
+					width 320px
+				+below('xs')
+					width 240px
+			#Thumbnails
+				clearfix()
+				margin 0 auto
 			.triggerButton
 				cursor pointer
 			.radioTrigger, .alwaysTriggered, .checkboxTrigger, .filterTrigger
@@ -128,10 +142,17 @@ html
 				background white
 				&:checked
 					background #F3EAE2
+			getColWidth(c,m)
+				c = unit(c,'')
+				m = unit(m,'')
+				doubleMargin = ((m*2))
+				marginsTotal = doubleMargin * c
+				remainder = (100 - marginsTotal)
+				width unit(remainder/c,'%')
+				margin unit(m,'%')
 			.thumbnail
 				display inline-block
-				float left
-				width 19%
+				getColWidth(5,0.3)
 				max-width thumbSize 
 				position relative
 				background #ccc
@@ -160,6 +181,17 @@ html
 						transform scale(1)
 						opacity .8
 						transition all .35s
+				+below('xl')
+					getColWidth(5,0.3)
+				+below('l')
+					getColWidth(4,0.3)
+				+below('m')
+					getColWidth(3,0.3)
+				+below('s')
+					getColWidth(2,0.3)
+				+below('xs')
+					width 100%
+					margin 0 auto
 			.clear
 				display block
 				clear both

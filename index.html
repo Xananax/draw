@@ -139,8 +139,46 @@ hr {
   overflow-y: scroll;
 }
 #Wrapper {
-  width: 1000px;
+  width: 1250px;
+  max-width: 100%;
   margin: 4em auto 2em auto;
+}
+@media only screen {
+  #Wrapper {
+    width: 1000px;
+  }
+}
+@media only screen and (max-width: 1050px) {
+  #Wrapper {
+    width: 600px;
+  }
+}
+@media only screen and (max-width: 800px) {
+  #Wrapper {
+    width: 400px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  #Wrapper {
+    width: 320px;
+  }
+}
+@media only screen and (max-width: 400px) {
+  #Wrapper {
+    width: 240px;
+  }
+}
+#Thumbnails {
+  zoom: 1;
+  margin: 0 auto;
+}
+#Thumbnails:before,
+#Thumbnails:after {
+  content: "";
+  display: table;
+}
+#Thumbnails:after {
+  clear: both;
 }
 .triggerButton {
   cursor: pointer;
@@ -243,8 +281,8 @@ hr {
 }
 .thumbnail {
   display: inline-block;
-  float: left;
-  width: 19%;
+  width: 19.4%;
+  margin: 0.3%;
   max-width: 200px;
   position: relative;
   background: #ccc;
@@ -310,6 +348,36 @@ hr {
   -o-transition: all 0.35s;
   -ms-transition: all 0.35s;
   transition: all 0.35s;
+}
+@media only screen {
+  .thumbnail {
+    width: 19.4%;
+    margin: 0.3%;
+  }
+}
+@media only screen and (max-width: 1050px) {
+  .thumbnail {
+    width: 24.4%;
+    margin: 0.3%;
+  }
+}
+@media only screen and (max-width: 800px) {
+  .thumbnail {
+    width: 32.733333333333334%;
+    margin: 0.3%;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .thumbnail {
+    width: 49.4%;
+    margin: 0.3%;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .thumbnail {
+    width: 100%;
+    margin: 0 auto;
+  }
 }
 .clear {
   display: block;
