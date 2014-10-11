@@ -92,6 +92,16 @@ html
 				background-size contain
 				background-repeat no-repeat
 				background-position 50% 50%
+			.title
+				position absolute
+				bottom 0
+				width 100%
+				box-sizing border-box
+				padding 1em
+				font-size 1.4em
+				background rgba(#fff,.6)
+				bottom -100%
+				transition all .8s ease-out 0s
 			.imageContainer
 				@extend $inlineMiddleHack
 				position fixed
@@ -163,6 +173,8 @@ html
 				box-shadow 1px 1px 4px rgba(0,0,0,.3)
 				transform scale(1) translateZ(0)
 				transition all 0s 1s
+				.title
+					font-size 1em
 				img
 					position absolute
 					top 0
@@ -181,6 +193,9 @@ html
 						transform scale(1)
 						opacity .8
 						transition all .35s
+					.title
+						bottom 0
+						transition-delay .4s
 				+below('xl')
 					getColWidth(5,0.3)
 				+below('l')
@@ -228,6 +243,7 @@ html
 				margin .1em
 				position relative
 				transition all 0.3s
+				font-size .85em
 				&:before
 					content ''
 					position absolute
@@ -259,6 +275,9 @@ html
 				visibility visible
 				opacity 1
 				animation scaleIn 1.3s forwards cubic-bezier(0.7, 0, 0.3, 1)
+				.title
+					bottom 0
+					transition-delay 1s
 			.radioTrigger[class*='imageTrigger']:checked ~ .alwaysTriggered
 				display block
 			#imagesCoverOption.checkboxTrigger:checked ~ .imageContainer
@@ -334,7 +353,7 @@ html
 			#Wrapper
 				!=text
 				hr
-				h4 select tags:
+				h4 select one or multiple tags below
 				each filter in filters
 					input.filterTrigger(type="checkbox",value=filter,id="filter"+filter)
 					label.filter.triggerButton(for="filter"+filter)=filter
@@ -344,6 +363,7 @@ html
 					each image,i in images
 						label.thumbnail.triggerButton(for=image.id+'Trigger',class=image.tags)
 							img(src=image.thumbnail,data-for=image.id)
+							.title=image.title
 		#Images
 			input#imagesCoverOption.checkboxTrigger(type="checkbox",name="options")
 			input.radioTrigger(type="radio",name="image",id="closeTrigger")
@@ -362,6 +382,7 @@ html
 							label.triggerButton.triggerPreviousImage(for=prev.id+'Trigger',data-for=prev.id)
 							label.triggerButton.triggerNextImage(for=next.id+'Trigger',data-for=next.id)
 					label.triggerButton.close(for="closeTrigger")
+					.title=image.title
 			.options.alwaysTriggered
 				label.optionTrigger.triggerButton(for="imagesCoverOption") zoom
 		if lazyLoad

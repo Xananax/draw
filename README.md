@@ -1,3 +1,6 @@
 # Drawing Resources
 
-This is a repository of drawing resources. I'm beginning with anatomy references. More to come later
+This is a repository of collected artworks and references to use as models.  
+For the time being, there are only anatomy references, but this will evolve with time.  
+
+Enjoy!

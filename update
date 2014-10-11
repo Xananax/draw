@@ -1,1 +1,1 @@
-git push && git checkout gh-pages && git pull . master && git push && git checkout master
+git add -A && git commit && git push && git checkout gh-pages && git pull . master && git push && git checkout master

@@ -8,6 +8,7 @@ var glob = require("glob")
 ,	stylus = require('stylus')
 ,	nib = require('nib')
 ,	rupture = require('rupture')
+,	inflection = require('inflection')
 ,	thumbs_dir = './_thumbs'
 ,	jade_file = './index.jade'
 ,	thumb_size = 200
@@ -19,9 +20,10 @@ function processImage(f,done){
 
 	var tags = f.replace(/^\//,'')
 		.replace(/\//g,' ')
-		.replace(/-/g,'')
+		.replace(/\s-|-\s|\s-\s/g,' ')
+		.replace(/-/g,' ')
 		.replace(/\.\w{3,4}$/,'')
-		.replace(/\./g,'')
+		.replace(/\.|,/g,'')
 		.replace(/\s{2,}/g,' ')
 		.replace(/^\s/,'')
 	,	safeName = tags.replace(/\s/g,'_').toLowerCase()
@@ -34,14 +36,20 @@ function processImage(f,done){
 			info.id = safeName;
 			if(info.type=='jpeg'){info.type='jpg';}
 			info.tags = tags.split(' ').filter(function(v){
-				return !v.match(/^(\d{1,}|the|a|and|in|to|at|of|on|image|picture)$/i);
-			}).map(function(v){return v.toLowerCase();})
+				return !v.match(/^(\d{1,}|the|a|and|in|to|at|of|on|image|picture|too|with|where|group|example|gender|wrong)$/i);
+			}).map(function(v){
+				v = v.toLowerCase();
+				if(!v.match(/(is|men|us|^tips)$/)){
+					v = inflection.singularize(v);
+				}
+				return v;
+			})
 			info.thumbnail = dest;
 			info.path = f.replace(/^\.|^\/|^\.\//,'');
 			info.filename = f.split('/').pop();
 			info.title = info.filename.replace(/\.\w{3,4}/,'');
 			info.ratio = ((info.width<info.height)?'portrait':((info.width>info.height)?'landscape':'square'));
-			info.dimensions = (info.density<100?'small':info.density>=300?'large':'medium');
+			info.dimensions = (info.density<100?'smallSize':info.density>=300?'largeSize':'mediumSize');
 			info.tags.push(info.ratio,info.dimensions);
 			fs.exists(dest,function(exists){
 				if(!exists){
