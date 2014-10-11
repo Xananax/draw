@@ -1,0 +1,350 @@
+doctype html
+html
+	head
+		title=title
+		:stylus
+			@import nib
+			@import url(http://fonts.googleapis.com/css?family=Raleway);
+			div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,pre, a, abbr, acronym, address, code, del, dfn, em, img,dl, dt, dd, ol, ul, li, fieldset, form, label,legend, caption, tbody, tfoot, thead, tr
+				reset-box-model()
+			a img
+				border: none
+			reset-html5()
+			$inlineMiddleHack
+				&:before
+					content ''
+					display inline-block
+					height 100%
+					width 0
+					vertical-align middle
+			$galleryControl
+				@extend $inlineMiddleHack
+				position fixed
+				width 3em
+				height 3em
+				text-align center
+				background white
+				border-radius 50%
+				display block
+				top 50%
+				&:after
+					content ''
+					margin-top -.2em
+					line-height 1
+					display inline-block
+					vertical-align middle
+					font-size 2em
+			body,html
+				width 100%
+				height 100%
+				overflow hidden
+				padding 0
+				margin 0
+				line-height: 1
+				font-family 'Raleway', sans-serif
+			h1,h2,h3,h4,h5
+				margin-bottom 1em
+			hr
+				width 85%
+				background-color #fff
+				display block
+				clear both
+				margin 2em auto
+				height 3px
+				border 0 none
+				box-shadow 0 2px 4px rgba(0,0,0,.3)
+			#Main
+				width 100%
+				height 100%
+				overflow-y scroll
+			#Wrapper
+				width 1000px
+				margin 4em auto 2em auto
+			.triggerButton
+				cursor pointer
+			.radioTrigger, .alwaysTriggered, .checkboxTrigger, .filterTrigger
+				display none
+			.radioTriggered
+				top -200%
+				visibility hidden
+				opacity 0
+				animation scaleOut .8s forwards cubic-bezier(0.7, 0, 0.3, 1)
+			.imageContainer,.image,.close
+				position absolute
+			.imageContainer,.image
+				left 0
+				right 0
+				bottom 0
+				background-size contain
+				background-repeat no-repeat
+				background-position 50% 50%
+			.imageContainer
+				@extend $inlineMiddleHack
+				position fixed
+				text-align center
+				background rgba(0,0,0,.8)
+			.image
+				@extend $inlineMiddleHack
+				width 100%
+				height 100%
+				overflow hidden
+				position absolute
+				overflow-y scroll
+				img
+					display inline-block
+					vertical-align middle
+					max-width 100%
+					min-width 10%
+					transition min-width 1s
+			.galleryNextPrevious
+				position absolute
+				top 0
+				left 0
+				right 0
+				bottom 0
+			.triggerPreviousImage,.triggerNextImage
+				@extend $galleryControl
+			.triggerPreviousImage
+				left 2em
+				&:after
+					content "\2039"
+			.triggerNextImage
+				right 2em
+				&:after
+					content "\203A"
+			.close
+				right 0
+				padding 1em
+				padding-right 2.5em
+				color white
+				font-weight bold
+				font-family Arial, sans-serif
+				&:after
+					content 'x'
+					font-size 1.2em
+					text-shadow 0px 0px 3px #000
+			.thumbnail
+				display inline-block
+				float left
+				width 19%
+				max-width thumbSize 
+				position relative
+				background #ccc
+				box-sizing border-box
+				border .3em solid white
+				margin .3%
+				overflow hidden
+				box-shadow 1px 1px 4px rgba(0,0,0,.3)
+				transform scale(1) translateZ(0)
+				transition all 0s 1s
+				img
+					position absolute
+					top 0
+					left 0
+					width 100%
+					transform-origin 50% 50%
+					opacity 1
+					transform scale(1.2)
+					transition all 1.5s
+				&:before
+					display block
+					content ''
+					padding-bottom 100%
+				&:hover
+					img
+						transform scale(1)
+						opacity .8
+						transition all .35s
+			.clear
+				display block
+				clear both
+			.loading
+				display inline-block
+				vertical-align middle
+				position relative
+				height 80px
+				width 80px
+				border-radius 80px
+				border 3px solid  rgba(255,255,255, .7)
+				transform-origin 50% 50%
+				animation spin 3s linear infinite
+				&:after
+					content ''
+					position absolute
+					top -5px
+					left 20px
+					width 11px
+					height 11px
+					border-radius 10px
+					background-color #fff			
+			.options
+				position fixed
+				bottom 0
+				left 0
+			.filter
+				float left
+				margin .1em
+				display inline-block
+				text-align middle
+				padding .3em
+				border-radius .04em
+				margin .1em
+				position relative
+				transition all 0.3s
+				&:before
+					content ''
+					position absolute
+					top 0
+					left 0
+					width 100%
+					height 100%
+					border-radius .1em
+					transform-origin 50% 50%
+					box-shadow 0px 0px 0px rgba(0,0,0,0)
+					transition all 1s
+					background-color #F3EAE2
+					opacity 0
+					transform scale(0)
+					z-index -1
+				&:hover
+					&:before
+						transform scale(1)
+						transition all 0.3s
+						opacity 1
+			.filterTrigger:checked + .filter
+				transform translateX(-2px) translateY(-2px)
+				&:before
+					opacity 1
+					transform scale(1)
+					box-shadow 2px 2px 2px rgba(0,0,0,.5)
+			.radioTrigger:checked + .radioTriggered
+				top 0
+				visibility visible
+				opacity 1
+				animation scaleIn 1.3s forwards cubic-bezier(0.7, 0, 0.3, 1)
+			.radioTrigger[class*='imageTrigger']:checked ~ .alwaysTriggered
+				display block
+			#imagesCoverOption.checkboxTrigger:checked ~ .imageContainer
+				.image
+					img
+						min-width 96%
+						max-width 96%
+			for f in imageFilters
+				.filterTrigger[value=\"{f}\"]:checked ~ #Thumbnails .thumbnail:not(.{f})
+					display none
+					box-shadow 0 none
+					animation remove 1s forwards linear
+					&:before
+						animation removeBefore 1s forwards linear
+			@keyframes remove
+				0%{
+					box-shadow 0 none
+				}
+				99%{
+					width 100%
+					border .3em solid white
+					margin .3em
+				}
+				100%{
+					border 0
+					margin 0
+					box-shadow 0 none
+					width 0
+					opacity 0
+					visibility 0
+				}
+			@keyframes removeBefore
+				0%{
+					padding-bottom 100%
+				}
+				99%{
+					padding-bottom 100%
+				}
+				100%{
+					padding-bottom 0
+				}
+			@keyframes spin
+				0%{transform:rotate(0deg);}
+				100%{transform:rotate(360deg);}
+			@keyframes scaleIn
+				from {
+					visibility hidden
+					transform scale(1.2)
+					opacity 0
+					top 0
+				}
+				to {
+					visibility visible
+					transform scale(1)
+					opacity 1
+					top 0
+				}
+			@keyframes scaleOut
+				0% {
+					visibility visible
+					transform scale(1)
+					opacity 1
+					top 0
+				}
+				100% {
+					opacity 0
+					transform scale(.7)
+					top -100%
+					visibility hidden
+				}
+	body
+		#Main
+			#Wrapper
+				!=text
+				hr
+				h4 select tags:
+				each filter in filters
+					input.filterTrigger(type="checkbox",value=filter,id="filter"+filter)
+					label.filter.triggerButton(for="filter"+filter)=filter
+				.clear
+				hr
+				#Thumbnails
+					each image,i in images
+						label.thumbnail.triggerButton(for=image.id+'Trigger',class=image.tags)
+							img(src=image.thumbnail,data-for=image.id)
+		#Images
+			input#imagesCoverOption.checkboxTrigger(type="checkbox",name="options")
+			input.radioTrigger(type="radio",name="image",id="closeTrigger")
+			each image,i in images
+				input.radioTrigger(type="radio",name="image",id=image.id+'Trigger',class="imageTrigger trigger-"+i)
+				.imageContainer.radioTriggered(class="triggered-"+i)
+					.loading
+					.image(class=image.ratio)
+						- var path = '.'+image.path
+						- var src = lazyLoad? '#' : path;
+						- var dataSrc = lazyLoad? path : false
+						- var next = images[i+1] || images[0]
+						- var prev = images[i-1] || images[images.length-1]
+						img(src=src,data-src=dataSrc,class=image.ratio,id=image.id)
+						.galleryNextPrevious
+							label.triggerButton.triggerPreviousImage(for=prev.id+'Trigger',data-for=prev.id)
+							label.triggerButton.triggerNextImage(for=next.id+'Trigger',data-for=next.id)
+					label.triggerButton.close(for="closeTrigger")
+			.options.alwaysTriggered
+				label.triggerButton(for="imagesCoverOption") zoom
+		if lazyLoad
+			script.
+				var wrappers = document.querySelectorAll('#Thumbnails,#Images');
+				var addListeners = function(el){
+					el.addEventListener('click',function(e){
+						var id = e.target.dataset['for']
+						if(!id){return;}
+						var image = document.getElementById(id);
+						if(!image){return;}
+						var processed = image.dataset.processed
+						if(processed){return;}
+						var src = image.dataset.src;
+						image.dataset.processed = true;
+						image.src=src;
+					});
+				}
+				var w,i=0;
+				while(w=wrappers[i++]){
+					addListeners(w);
+				}
+
