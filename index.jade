@@ -366,7 +366,7 @@ html
 							.title=image.title
 		#Images
 			input#imagesCoverOption.checkboxTrigger(type="checkbox",name="options")
-			input.radioTrigger(type="radio",name="image",id="closeTrigger")
+			input#closeTrigger.radioTrigger(type="radio",name="image")
 			each image,i in images
 				input.radioTrigger(type="radio",name="image",id=image.id+'Trigger',class="imageTrigger trigger-"+i)
 				.imageContainer.radioTriggered(class="triggered-"+i)
@@ -385,6 +385,13 @@ html
 					.title=image.title
 			.options.alwaysTriggered
 				label.optionTrigger.triggerButton(for="imagesCoverOption") zoom
+		script.
+			var closeTrigger = document.getElementById('closeTrigger')
+			document.addEventListener('keyup', function(event) {
+				if(event.keyCode==27){
+					closeTrigger.checked = true;
+				}
+			});
 		if lazyLoad
 			script.
 				var wrappers = document.querySelectorAll('#Thumbnails,#Images');
@@ -405,4 +412,3 @@ html
 				while(w=wrappers[i++]){
 					addListeners(w);
 				}
-
