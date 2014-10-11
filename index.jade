@@ -391,7 +391,7 @@ html
 						- var dataSrc = lazyLoad? path : false
 						- var next = images[i+1] || images[0]
 						- var prev = images[i-1] || images[images.length-1]
-						img(src=src,data-src=dataSrc,class=image.ratio,id=image.id)
+						img(src=src,data-src=dataSrc,class=image.ratio,id=image.id,data-processed=!lazyLoad)
 						.galleryNextPrevious
 							label.triggerButton.triggerPreviousImage(for=prev.id+'Trigger',data-for=prev.id)
 							label.triggerButton.triggerNextImage(for=next.id+'Trigger',data-for=next.id)
@@ -406,23 +406,38 @@ html
 					closeTrigger.checked = true;
 				}
 			});
-		if lazyLoad
-			script.
-				var wrappers = document.querySelectorAll('#Thumbnails,#Images');
-				var addListeners = function(el){
-					el.addEventListener('click',function(e){
-						var id = e.target.dataset['for']
-						if(!id){return;}
-						var image = document.getElementById(id);
-						if(!image){return;}
-						var processed = image.dataset.processed
-						if(processed){return;}
-						var src = image.dataset.src;
-						image.dataset.processed = true;
-						image.src=src;
-					});
+			document.getElementById('closeTrigger').addEventListener('click',function(){
+				window.location.hash = '';
+				})
+			var processImage = function(id){
+				var image = document.getElementById(id);
+				if(!image){return;}
+				var processed = image.dataset.processed
+				if(processed){return;}
+				var src = image.dataset.src;
+				image.dataset.processed = true;
+				image.src=src;
+			}
+			var wrappers = document.querySelectorAll('#Thumbnails,#Images');
+			var addListeners = function(el){
+				el.addEventListener('click',function(e){
+					var id = e.target.dataset['for']
+					if(!id){return;}
+					window.location.hash = id;
+					processImage(id);
+				});
+			}
+			var w,i=0;
+			while(w=wrappers[i++]){
+				addListeners(w);
+			}
+			if(window.location.hash){
+				var id = window.location.hash.replace(/^#/,'')
+				,	triggerId = id+'Trigger'
+				,	trigger = document.getElementById(triggerId)
+				;
+				if(trigger){
+					trigger.checked = true;
 				}
-				var w,i=0;
-				while(w=wrappers[i++]){
-					addListeners(w);
-				}
+				processImage(id);
+			}
