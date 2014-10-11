@@ -321,7 +321,7 @@ html
 					.loading
 					.image(class=image.ratio)
 						- var path = '.'+image.path
-						- var src = lazyLoad? './trans.gif' : path;
+						- var src = lazyLoad? 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' : path;
 						- var dataSrc = lazyLoad? path : false
 						- var next = images[i+1] || images[0]
 						- var prev = images[i-1] || images[images.length-1]
