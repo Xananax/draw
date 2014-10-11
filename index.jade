@@ -123,6 +123,11 @@ html
 					content 'x'
 					font-size 1.2em
 					text-shadow 0px 0px 3px #000
+			.optionTrigger
+				padding .3em
+				background white
+				&:checked
+					background #F3EAE2
 			.thumbnail
 				display inline-block
 				float left
@@ -326,7 +331,7 @@ html
 							label.triggerButton.triggerNextImage(for=next.id+'Trigger',data-for=next.id)
 					label.triggerButton.close(for="closeTrigger")
 			.options.alwaysTriggered
-				label.triggerButton(for="imagesCoverOption") zoom
+				label.optionTrigger.triggerButton(for="imagesCoverOption") zoom
 		if lazyLoad
 			script.
 				var wrappers = document.querySelectorAll('#Thumbnails,#Images');
