@@ -1,0 +1,31 @@
+{
+  "name": "draw",
+  "version": "0.0.0",
+  "description": "drawing aids",
+  "main": "app.js",
+  "dependencies": {
+    "async": "^0.9.0",
+    "glob": "^4.0.6",
+    "jade": "^1.7.0",
+    "marked": "^0.3.2",
+    "nib": "^1.0.4",
+    "easyimage": "^1.0.3",
+    "mkdirp": "^0.5.0",
+    "stylus": "^0.49.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+  	"start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Xananax/draw.git"
+  },
+  "author": "xananax@yelostudio.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Xananax/draw/issues"
+  },
+  "homepage": "https://github.com/Xananax/draw"
+}

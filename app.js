@@ -23,7 +23,7 @@ function processImage(f,done){
 		.replace(/\./g,'')
 		.replace(/\s{2,}/g,' ')
 		.replace(/^\s/,'')
-	,	safeName = tags.replace(/\s/g,'_')
+	,	safeName = tags.replace(/\s/g,'_').toLowerCase()
 	,	dest = thumbs_dir+'/'+safeName+'.jpg'
 	;
 	easyimg.info(f).then(
