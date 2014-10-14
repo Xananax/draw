@@ -16,6 +16,31 @@ var glob = require("glob")
 ,	error = function(err){if(err){throw err;}}
 ;
 
+function synonyms(tags){
+	return tags
+		.replace(/facial features/g,'facial_features')
+		.replace(/adipose tissue/g,'fat')
+		.replace(/adipose/g,'fat')
+		.replace(/different/g,'difference')
+		.replace(/difference/g,'comparison')
+		.replace(/place$/,'placement')
+		.replace(/place /,'placement ')
+		.replace(/sacro spinalis/g,'spinalis')
+		.replace(/note/g,'tips')
+		.replace(/simplified/,'blockout')
+		.replace(/3d/,'AXXXAAAAAAXXXXX').replace(/\d/g,'').replace(/AXXXAAAAAAXXXXX/,'3D')
+		.replace(/shape/g,'blockout')
+		.replace(/form/g,'blockout')
+		.replace(/popliteal.fossae?/g,'knee')
+	;
+}
+
+function filterName(filter){
+	if(filter.match(/thethirdcartel|loomis/)){filter='artist-'+filter;}
+	else if(filter.match(/small|large|medium/)){filter='size-'+filter;}
+	return filter.replace(/_/g,' ');
+}
+
 function processImage(f,done){
 
 	var tags = f.replace(/^\//,'')
@@ -33,13 +58,13 @@ function processImage(f,done){
 
 		function(info){
 			info.type = info.type.toLowerCase();
+			if(info.type=='jpeg'){info.type='jpg';}
 			if(info.type=='gif'){dest = dest.replace(/jpg$/,'gif');}
 			info.id = safeName;
-			if(info.type=='jpeg'){info.type='jpg';}
-			info.tags = tags.split(' ').filter(function(v){
-				return !v.match(/^(\d{1,}|the|a|and|in|to|at|of|on|image|picture|too|with|where|group|example|gender|wrong)$/i);
+			info.tags = synonyms(tags.toLowerCase())
+			info.tags = info.tags.split(' ').filter(function(v){
+				return !v.match(/^(\d{1,}|the|a|and|in|to|at|of|on|image|picture|too|with|where|group|example|gender|wrong|main)$/i);
 			}).map(function(v){
-				v = v.toLowerCase();
 				if(!v.match(/(is|men|us|^tips)$/)){
 					v = inflection.singularize(v);
 				}
@@ -50,7 +75,7 @@ function processImage(f,done){
 			info.filename = f.split('/').pop();
 			info.title = info.filename.replace(/\.\w{3,4}/,'');
 			info.ratio = ((info.width<info.height)?'portrait':((info.width>info.height)?'landscape':'square'));
-			info.dimensions = (info.density<100?'smallSize':info.density>=300?'largeSize':'mediumSize');
+			info.dimensions = (info.density<100?'small':info.density>=300?'large':'medium');
 			info.tags.push(info.ratio,info.dimensions);
 			fs.exists(dest,function(exists){
 				if(!exists){
@@ -156,6 +181,7 @@ async.parallel({
 	results.lazyLoad = lazy_load;
 	processJade(jade_file,results,function(err,fn){
 		if(err){throw err;}
+		results.filterName = filterName;
 		var html = fn(results);
 		fs.writeFile('index.html',html,{encoding:'utf8'},function(err){
 			if(err){throw err;}
