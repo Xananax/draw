@@ -541,11 +541,11 @@ html
 			document.addEventListener('keyup', function(event) {
 				if(event.keyCode==27){
 					closeTrigger.checked = true;
-				}
+				};
 			});
 			document.getElementById('closeTrigger').addEventListener('click',function(){
 				window.location.hash = '';
-				})
+			});
 			var processImage = function(id){
 				var image = document.getElementById(id);
 				if(!image){return;}
@@ -554,20 +554,20 @@ html
 				var src = image.dataset.src;
 				image.dataset.processed = true;
 				image.src=src;
-			}
+			};
 			var wrappers = document.querySelectorAll('#Thumbnails,#Images');
 			var addListeners = function(el){
 				el.addEventListener('click',function(e){
-					var id = e.target.dataset['for']
+					var id = e.target.dataset['for'];
 					if(!id){return;}
 					window.location.hash = id;
 					processImage(id);
 				});
-			}
+			};
 			var w,i=0;
 			while(w=wrappers[i++]){
 				addListeners(w);
-			}
+			};
 			if(window.location.hash){
 				var id = window.location.hash.replace(/^#/,'')
 				,	triggerId = id+'Trigger'
@@ -575,6 +575,6 @@ html
 				;
 				if(trigger){
 					trigger.checked = true;
-				}
+				};
 				processImage(id);
 			}

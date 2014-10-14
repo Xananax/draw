@@ -147,7 +147,7 @@ function makeStylusProcessor(opts){
 			.define('albums',opts.albums.map(function(v){return v.toLowerCase();}))
 			.render(function(err, css){
 				if(err){css="body:before{content:'"+err.replace(/\n/g,' ')+"';width:100%;height:100%;top:0;left:0;position:absolute;background:yellow;"}
-				ret = css;
+				ret = css.replace(/\n|\t/g,'');
 			})
 		;
 		return '<style type="text/css">' + ret + '</style>';
