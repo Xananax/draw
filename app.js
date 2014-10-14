@@ -33,6 +33,7 @@ function processImage(f,done){
 
 		function(info){
 			info.type = info.type.toLowerCase();
+			if(info.type=='gif'){dest = dest.replace(/jpg$/,'gif');}
 			info.id = safeName;
 			if(info.type=='jpeg'){info.type='jpg';}
 			info.tags = tags.split(' ').filter(function(v){
@@ -55,7 +56,7 @@ function processImage(f,done){
 				if(!exists){
 					return easyimg.rescrop({
 						src:f
-					,	dst: info.type=='gif' ? dest.replace(/jpg$/,'gif') : dest
+					,	dst: dest
 					,	width:thumb_size
 					,	height:thumb_size
 					,	cropwidth:thumb_size
