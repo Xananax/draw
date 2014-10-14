@@ -14,6 +14,7 @@ var glob = require("glob")
 ,	thumb_size = 200
 ,	lazy_load = true
 ,	error = function(err){if(err){throw err;}}
+,	albums = ['Anatomy','Animals','Animation','CharaDesign','Coloring','Perspective','Props']
 ;
 
 function synonyms(tags){
@@ -32,6 +33,8 @@ function synonyms(tags){
 		.replace(/shape/g,'blockout')
 		.replace(/form/g,'blockout')
 		.replace(/popliteal.fossae?/g,'knee')
+		.replace(/colour/g,'color')
+		.replace(/coloring/g,'color')
 	;
 }
 
@@ -53,9 +56,9 @@ function processImage(f,done){
 		.replace(/^\s/,'')
 	,	safeName = tags.replace(/\s/g,'_').toLowerCase()
 	,	dest = thumbs_dir+'/'+safeName+'.jpg'
+	,	dir = f.replace(/^\.\//,'').split('/').shift()
 	;
 	easyimg.info(f).then(
-
 		function(info){
 			info.type = info.type.toLowerCase();
 			if(info.type=='jpeg'){info.type='jpg';}
@@ -69,7 +72,9 @@ function processImage(f,done){
 					v = inflection.singularize(v);
 				}
 				return v;
-			})
+			});
+			info.tags.push('album-'+dir.toLowerCase());
+			info.dir = dir;
 			info.thumbnail = dest;
 			info.path = f.replace(/^\.|^\/|^\.\//,'');
 			info.filename = f.split('/').pop();
@@ -79,6 +84,7 @@ function processImage(f,done){
 			info.tags.push(info.ratio,info.dimensions);
 			fs.exists(dest,function(exists){
 				if(!exists){
+
 					return easyimg.rescrop({
 						src:f
 					,	dst: dest
@@ -113,6 +119,14 @@ function processDir(path,cb){
 	});
 }
 
+function processDirs(dirs,cb){
+	async.map(dirs,processDir,function(err,results){
+		if(err){return cb(err);}
+		var merged = [];
+		cb(null,merged.concat.apply(merged,results));
+	});
+}
+
 function processMarked(path,cb){
 	fs.readFile(path,{encoding:'utf8'},function(err,res){
 		if(err){return cb(err);}
@@ -130,6 +144,7 @@ function makeStylusProcessor(opts){
 			.use(rupture())
 			.define('thumbSize', new stylus.nodes.Unit(opts.thumb_size,'px'))
 			.define('imageFilters',opts.filters)
+			.define('albums',opts.albums.map(function(v){return v.toLowerCase();}))
 			.render(function(err, css){
 				if(err){css="body:before{content:'"+err.replace(/\n/g,' ')+"';width:100%;height:100%;top:0;left:0;position:absolute;background:yellow;"}
 				ret = css;
@@ -171,20 +186,23 @@ function makeFilters(images){
 }
 
 async.parallel({
-	images:function(done){processDir('./Anatomy',done);}
+	images:function(done){processDirs(albums,done);}
 ,	text:function(done){processMarked('./README.md',done);}
-},function(err,results){
-	if(err){console.log(err);throw err;}
-	results.title = "Image Reference Gallery"
-	results.thumb_size = thumb_size;
-	results.filters = makeFilters(results.images);
-	results.lazyLoad = lazy_load;
-	processJade(jade_file,results,function(err,fn){
-		if(err){throw err;}
-		results.filterName = filterName;
-		var html = fn(results);
-		fs.writeFile('index.html',html,{encoding:'utf8'},function(err){
+	}
+,	function(err,results){
+		if(err){console.log(err);throw err;}
+		results.title = "Image Reference Gallery"
+		results.thumb_size = thumb_size;
+		results.albums = albums;
+		results.filters = makeFilters(results.images);
+		results.lazyLoad = lazy_load;
+		processJade(jade_file,results,function(err,fn){
 			if(err){throw err;}
+			results.filterName = filterName;
+			var html = fn(results);
+			fs.writeFile('index.html',html,{encoding:'utf8'},function(err){
+				if(err){throw err;}
+			})
 		})
-	})
-})
+	}
+);

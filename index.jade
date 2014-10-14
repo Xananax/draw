@@ -43,7 +43,8 @@ html
 				line-height: 1
 				font-family 'Raleway', sans-serif
 			h1,h2,h3,h4,h5
-				margin-bottom 1em
+				margin-bottm .5em
+				margin-top 1em
 			hr
 				width 85%
 				background-color #fff
@@ -85,7 +86,7 @@ html
 				margin 0 auto
 			.triggerButton
 				cursor pointer
-			.radioTrigger, .alwaysTriggered, .checkboxTrigger, .filterTrigger
+			.radioTrigger, .alwaysTriggered, .checkboxTrigger, .filterTrigger, .albumFilterTrigger
 				display none
 			.radioTriggered
 				top -200%
@@ -274,7 +275,7 @@ html
 						transform scale(1)
 						transition all 0.3s
 						opacity 1
-			.filterTrigger:checked + .filter
+			.filterTrigger:checked + .filter, .albumFilterTrigger:checked + .albumFilter
 				transform translateX(-2px) translateY(-2px)
 				&:before
 					opacity 1
@@ -296,13 +297,38 @@ html
 					img
 						min-width 96%
 						max-width 96%
+			for f in albums
+				.albumFilterTrigger[value=\"{f}\"]:checked ~ #Thumbnails .thumbnail:not(.album-{f})
+					display none
+					box-shadow 0 none
 			for f in imageFilters
 				.filterTrigger[value=\"{f}\"]:checked ~ #Thumbnails .thumbnail:not(.{f})
 					display none
 					box-shadow 0 none
-					animation remove 1s forwards linear
+			#References
+				margin 1em auto
+				padding 1em
+				box-sizing border-box
+				ul, li
+					list-style none
+				#ReferencesText
+					padding 1em
+					ul
+						padding-left 1em
+			.hidden
+				height 0
+				overflow auto
+				transition all 1s ease-out
+			.showHiddenTrigger
+				&:before
+					content '+ '
+			.showHidden:checked 
+				~ .hidden
+					height 30em
+					max-height 100%
+				~ .showHiddenTrigger
 					&:before
-						animation removeBefore 1s forwards linear
+						content '- '
 			@keyframes remove
 				0%{
 					box-shadow 0 none
@@ -363,7 +389,113 @@ html
 		#Main
 			#Wrapper
 				!=text
+				#References
+					input#showReferences.checkboxTrigger.showHidden(type="checkbox",name="options")
+					label.showHiddenTrigger(for="showReferences") Further References
+					.hidden
+						#ReferencesText
+							h3 Model Sheets
+							ul
+								li: a(href="http://ultimateirongiant.com/model/model.php",target="_blank") Ultimate Iron Giant
+								li: a(href="http://www.michaelspornanimation.com/splog/index.php?s=disney+model+sheets&submit=Search&paged=2",target="_blank") Michael Sporn Animation
+								li: a(href="http://livlily.blogspot.com/2010/11/model-sheets-production-drawings.html",target="_blank") Living Lines
+							h3 Character Designers
+							ul
+								li: a(href="http://zebeblog.blogspot.com/",target="_blank") Christophe "Zebe" Lourdelet
+							h3 Character Design Tutorials
+							ul
+								li: a(href="http://secretwellwater.tumblr.com/post/27296249869/costumes-the-wearable-dialog") Character Costumes
+							h3 Reference Websites
+							ul
+								li: a(href="http://www.zvork.fr/vls/") Lighting Simulator
+							h3 Blogs
+							ul
+								li: h4 HUMAN ANATOMY
+								ul
+									li: a(href="http://anatomicalart.tumblr.com/") anatomicalart.tumblr.com/
+									li: a(href="http://amazinglyartisticadvice.tumblr.com/") amazinglyartisticadvice.tumblr.com/
+									li: a(href="http://anatomicalart.tumblr.com/") anatomicalart.tumblr.com/
+									li: a(href="http://artutorials.tumblr.com/") artutorials.tumblr.com/
+									li: a(href="http://referencesforartists.tumblr.com/") referencesforartists.tumblr.com/
+									li: a(href="http://the-art-post.tumblr.com/") the-art-post.tumblr.com/
+									li: a(href="http://ibelievepracticemakesperfect.tumblr.com/") ibelievepracticemakesperfect.tumblr.com/
+								li: h4 FASHION/CLOTHING
+								ul
+									li: a(href="http://lifestylefashion.tumblr.com/") lifestylefashion.tumblr.com/
+									li: a(href="http://drawthisdress.tumblr.com/") drawthisdress.tumblr.com/
+									li: a(href="http://saranghaex5.tumblr.com/") saranghaex5.tumblr.com/
+									li: a(href="http://vogue.tumblr.com/") vogue.tumblr.com/
+									li: a(href="http://carnevaledivenezia.tumblr.com/") carnevaledivenezia.tumblr.com/
+									li: a(href="http://empireoffashion.tumblr.com/") empireoffashion.tumblr.com/
+									li: a(href="http://neuro-mantique.tumblr.com/") neuro-mantique.tumblr.com/
+									li: a(href="http://calantheandthenightingale.tumblr.com/") calantheandthenightingale.tumblr.com/
+									li: a(href="http://dressesthatilike.tumblr.com/") dressesthatilike.tumblr.com/
+									li: a(href="http://fashionoverhype.com/") fashionoverhype.com/
+									li: a(href="http://thingstheheartdesires.tumblr.com/") thingstheheartdesires.tumblr.com/
+									li: a(href="http://fuckyeahwarriorwomen.tumblr.com/") fuckyeahwarriorwomen.tumblr.com/
+									li: a(href="http://womenfighters.tumblr.com/") womenfighters.tumblr.com/
+									li: a(href="http://babesinarmor.tumblr.com/") babesinarmor.tumblr.com/
+									li: a(href="http://omgthatdress.tumblr.com") omgthatdress.tumblr.com
+								li: h4 ANIMATION
+								ul
+									li: a(href="http://tvpaintanimation.tumblr.com/") tvpaintanimation.tumblr.com/
+									li: a(href="http://wannabeanimator.tumblr.com/") wannabeanimator.tumblr.com/
+									li: a(href="http://drawingforsuckas.tumblr.com/") drawingforsuckas.tumblr.com/
+								li: h4 HISTORICAL
+								ul
+									li: a(href="http://fuckyeahvintage.tumblr.com/") fuckyeahvintage.tumblr.com/
+									li: a(href="http://lostsplendor.tumblr.com/") lostsplendor.tumblr.com/
+									li: a(href="http://doctormonocle.com/") doctormonocle.com/
+									li: a(href="http://tass-posters.tumblr.com/") tass-posters.tumblr.com/
+									li: a(href="http://centuriespast.tumblr.com/") centuriespast.tumblr.com/
+									li: a(href="http://www.cavetocanvas.com/") www.cavetocanvas.com/
+									li: a(href="http://1920s.tumblr.com/") 1920s.tumblr.com/
+									li: a(href="http://1930s.tumblr.com/") 1930s.tumblr.com/
+									li: a(href="http://1940s.tumblr.com/") 1940s.tumblr.com/
+									li: a(href="http://1950s.tumblr.com/") 1950s.tumblr.com/
+								li: h4 ART TIPS/TUTORIAL
+								ul
+									li: a(href="http://fyeaharttips.tumblr.com/") fyeaharttips.tumblr.com/
+									li: a(href="http://fuckyeaharttutorials.tumblr.com/") fuckyeaharttutorials.tumblr.com/
+									li: a(href="http://art-tutorials.tumblr.com/") art-tutorials.tumblr.com/
+									li: a(href="http://thecandyjar.tumblr.com/") thecandyjar.tumblr.com/
+									li: a(href="http://eyecager.tumblr.com/") eyecager.tumblr.com/
+									li: a(href="http://underappreciatedart.tumblr.com/") underappreciatedart.tumblr.com/
+									li: a(href="http://artists-help.tumblr.com/") artists-help.tumblr.com/
+								li: h4 ART REFERENCES
+								ul
+									li: a(href="http://pb-resources.tumblr.com/") pb-resources.tumblr.com/
+									li: a(href="http://artreferncesforyou.tumblr.com/") artreferncesforyou.tumblr.com/
+									li: a(href="http://simonist.tumblr.com/") simonist.tumblr.com/
+									li: a(href="http://idlm.tumblr.com/") idlm.tumblr.com/
+									li: a(href="http://artreferences.tumblr.com/") artreferences.tumblr.com/
+									li: a(href="http://theprophetandtheliar.tumblr.com/") theprophetandtheliar.tumblr.com/
+									li: a(href="http://art-help.tumblr.com/") art-help.tumblr.com/
+									li: a(href="http://artanecdotally.tumblr.com/") artanecdotally.tumblr.com/
+								li: h4 ART INSPIRATION
+								ul
+									li: a(href="http://pythias.tumblr.com/") pythias.tumblr.com/
+									li: a(href="http://submit.curioos.com/") submit.curioos.com/
+									li: a(href="http://stoopidanchovy.tumblr.com/") stoopidanchovy.tumblr.com/
+									li: a(href="http://artistdirectory.tumblr.com/") artistdirectory.tumblr.com/
+									li: a(href="http://fuckyeahillustrativeart.tumblr.com/") fuckyeahillustrativeart.tumblr.com/
+									li: a(href="http://deviantfinds.tumblr.com/") deviantfinds.tumblr.com/
+									li: a(href="http://gunnerromantic.tumblr.com/") gunnerromantic.tumblr.com/
+									li: a(href="http://1000reasonsnottostartmakingart.tumblr.com/") 1000reasonsnottostartmakingart.tumblr.com/
+									li: a(href="http://nightgrain.tumblr.com/") nightgrain.tumblr.com/
+									li: a(href="http://kayspiration.tumblr.com/") kayspiration.tumblr.com/
+									li: a(href="http://referenceartgallery.tumblr.com/") referenceartgallery.tumblr.com/
+									li: a(href="http://artforadults.tumblr.com/") artforadults.tumblr.com/
+								li: h4 MISC
+								ul
+									li: a(href="http://attadesign.tumblr.com/") attadesign.tumblr.com/
+									li: a(href="http://digitalgrfx.tumblr.com/") digitalgrfx.tumblr.com/
 				hr
+				h4 albums
+				each filter in albums
+					input.albumFilterTrigger(type="checkbox",value=filter.toLowerCase(),id="albumFilter"+filter)
+					label.albumFilter.filter.triggerButton(for="albumFilter"+filter)=filterName(filter)
+				br
 				h4 select one or multiple tags below
 				each filter in filters
 					input.filterTrigger(type="checkbox",value=filter,id="filter"+filter)
@@ -372,9 +504,10 @@ html
 				hr
 				#Thumbnails
 					each image,i in images
-						label.thumbnail.triggerButton(for=image.id+'Trigger',class=image.tags)
+						label.thumbnail.triggerButton(for=image.id+'Trigger',class=image.tags,data-album=image.dir.toLowerCase())
 							img(src=image.thumbnail,data-for=image.id)
 							.title=image.title
+
 				#Footer
 					p Copyright fuck all ya'll&copy;
 					p People need to learn, if you're actually pissed off shoot me an 
