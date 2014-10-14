@@ -55,7 +55,7 @@ function processImage(f,done){
 		.replace(/\s{2,}/g,' ')
 		.replace(/^\s/,'')
 	,	safeName = tags.replace(/\s/g,'_').toLowerCase()
-	,	dest = thumbs_dir+'/'+safeName+'.jpg'
+	,	dest = thumbs_dir.replace(/^\.\//,'')+'/'+safeName+'.jpg'
 	,	dir = f.replace(/^\.\//,'').split('/').shift()
 	;
 	easyimg.info(f).then(
@@ -76,7 +76,7 @@ function processImage(f,done){
 			info.tags.push('album-'+dir.toLowerCase());
 			info.dir = dir;
 			info.thumbnail = dest;
-			info.path = f.replace(/^\.|^\/|^\.\//,'');
+			info.path = f.replace(/^\.\//,'');
 			info.filename = f.split('/').pop();
 			info.title = info.filename.replace(/\.\w{3,4}/,'');
 			info.ratio = ((info.width<info.height)?'portrait':((info.width>info.height)?'landscape':'square'));

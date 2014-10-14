@@ -523,7 +523,7 @@ html
 				.imageContainer.radioTriggered(class="triggered-"+i)
 					.loading
 					.image(class=image.ratio)
-						- var path = '.'+image.path
+						- var path = image.path
 						- var src = lazyLoad? 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' : path;
 						- var dataSrc = lazyLoad? path : false
 						- var next = images[i+1] || images[0]
