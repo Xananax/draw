@@ -55,7 +55,7 @@ function processImage(f,done){
 				if(!exists){
 					return easyimg.rescrop({
 						src:f
-					,	dst:dest
+					,	dst: info.type=='gif' ? dest.replace(/jpg$/,'gif') : dest
 					,	width:thumb_size
 					,	height:thumb_size
 					,	cropwidth:thumb_size
@@ -109,7 +109,7 @@ function makeStylusProcessor(opts){
 				ret = css;
 			})
 		;
-		return '<style type="text/css">' + ret + '</style>'; 
+		return '<style type="text/css">' + ret + '</style>';
 	}
 }
 
@@ -148,7 +148,7 @@ async.parallel({
 	images:function(done){processDir('./Anatomy',done);}
 ,	text:function(done){processMarked('./README.md',done);}
 },function(err,results){
-	if(err){throw err;}
+	if(err){console.log(err);throw err;}
 	results.title = "Image Reference Gallery"
 	results.thumb_size = thumb_size;
 	results.filters = makeFilters(results.images);
@@ -158,7 +158,6 @@ async.parallel({
 		var html = fn(results);
 		fs.writeFile('index.html',html,{encoding:'utf8'},function(err){
 			if(err){throw err;}
-			console.log('ok');
 		})
 	})
 })
